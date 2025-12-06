@@ -118,6 +118,20 @@ void printPath(pair<int,int> exitcell,
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
 bool dfs(int r, int c, const vector<vector<int>>& maze, vector<vector<bool>>& visited,vector<vector<int>>& parent_r, vector<vector<int>>& parent_c, int exit_r, int exit_c) {
+    //size of maze for bounds check
+    int N = maze.size();
+    int M = maze[0].size();
+
+    //checks if in bounds
+    if (r < 0 || r >= N || c < 0 || c >= M) {
+        return false;
+    }
+
+    //checks for wall
+    if (maze[r][c] == 1) {
+        return false;
+    }
+
     //marks current cell as visited
     visited[r][c] = true;
 
@@ -132,14 +146,13 @@ bool dfs(int r, int c, const vector<vector<int>>& maze, vector<vector<bool>>& vi
         int next_c = c + dc[i];
 
         //checks if spaces are walls or visited, and if path found keeps track
-        if (next_r >= 0  && next_c >= 0 && !visited[next_r][next_c]) {
+        if (next_r >= 0  && next_r < N && next_c >= 0 && next_c < M && maze[next_r][next_c] == 0 && !visited[next_r][next_c]) {
             parent_r[next_r][next_c] = r;
             parent_c[next_r][next_c] = c;
-        }
-
-        //recursive call
-        if (dfs(r, c, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
-            return true;
+            //recursive call
+            if (dfs(next_r, next_c, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
+                return true;
+            }
         }
     }
     return false;
