@@ -117,9 +117,34 @@ void printPath(pair<int,int> exitcell,
 // STUDENTS IMPLEMENT DFS HERE
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
-// bool dfs(……) {
-//     // Your code here
-// }
+bool dfs(int row, int column, const vector<vector<int>>& maze, vector<vector<bool>>& visited,vector<vector<int>>& parent_r, vector<vector<int>>& parent_c, int exit_r, int exit_c) {
+    //marks current cell as visited
+    visited[row][column] = true;
+
+    //base case
+    if (row == exit_r && column == exit_c) {
+        cout << "solved" << endl;
+        return true;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        int next_r = row + dr[i];
+        int next_c = column + dc[i];
+
+        //checks if spaces are walls or visited, and if path found keeps track
+        if (next_r >= 0  && next_c >= 0 && !visited[next_r][next_c]) {
+            parent_r[next_r][next_c] = row;
+            parent_c[next_r][next_c] = column;
+        }
+
+        //recursive call
+        if (dfs(row, column, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
+            return true;
+        }
+    }
+    return false;
+
+}
 
 
 // ----------------------------------------------------------
